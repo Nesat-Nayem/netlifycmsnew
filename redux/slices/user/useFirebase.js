@@ -3,8 +3,9 @@
 import {
     getAuth,
     createUserWithEmailAndPassword,
-    singInWithEmailAndPassword,
-    singOut
+    signInWithEmailAndPassword,
+    updateProfile,
+    signOut
 
 } from "firebase/auth";
 import { useRouter } from "next/router";
@@ -22,26 +23,32 @@ import {
 
 const useFirebase = () => {
     const currentUser = useSelector((state) =>state.user.currentUser);
-
+    console.log(currentUser);
     const dispatch = useDispatch()
     const router = useRouter()
     const auth = getAuth()
 
     const singUpWithEmailAndPassword =(
-        username,
+       username,
         email,
         password,
-        photoUrl
+        photoURL,
+        userInfo
+    
     ) =>{ 
   createUserWithEmailAndPassword(auth, email, password)
     .then((result) =>{
+      console.log(result);
         updateProfile(auth.currentUser,{
             displayName: username,
-            photoUrl: photoUrl,
+            photoURL: photoURL,
+          
         });
-        saveData(userInfo);
+        // saveData(userInfo);
+       
     })
-    
+    // displayName: username,
+    // photoURL: photoURL,
     .catch((err) =>{
         dispatch(registerFailed(err.message))
     });
@@ -54,7 +61,7 @@ const useFirebase = () => {
 // sing In
 
 const logInWithEmailAndPassword = (email,password) =>{
-    singInWithEmailAndPassword(auth,email,password)
+    signInWithEmailAndPassword(auth, email, password)
     .then((result) =>{
         dispatch(singIn(result.user));
         router.push("/");
@@ -68,7 +75,7 @@ const logInWithEmailAndPassword = (email,password) =>{
 // sing Out
 
 const logOut = () =>{
-    singOut(auth)
+    signOut(auth)
     .then(()=>{
         dispatch(singOutCurrentUser())
     })
@@ -76,6 +83,7 @@ const logOut = () =>{
         dispatch(registerFailed(err.message))
     });
 };
+
 
 return{logInWithEmailAndPassword, singUpWithEmailAndPassword, logOut}
 

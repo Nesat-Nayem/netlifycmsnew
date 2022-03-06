@@ -1,10 +1,19 @@
 import { useForm } from "react-hook-form";
+import useFirebase from "../../../redux/slices/user/useFirebase";
 
 const UserSingIn = () => {
-    const { register, handleSubmit, watch, formState: { errors } } = useForm();
-    const onSubmit = data => console.log(data);
+  const {logInWithEmailAndPassword} = useFirebase();
+
+
+
+
+    const { register, handleSubmit, watch, formState: { errors }, } = useForm();
+    const onSubmit = data => {
+      logInWithEmailAndPassword(data.email, data.password)
+    }
   
-    console.log(watch("example"));
+    // console.log(watch("example"));
+    
   return (
     <div className="">
         <h1 className="text-2xl text-center font-bold mt-10">Sing In</h1>

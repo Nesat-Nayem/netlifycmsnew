@@ -11,13 +11,11 @@ export const userSlice = createSlice({
     reducers:{
         initialUserData:(state, action) =>{
             if(action.payload){
-                const{
-                    displayName,photoUrl, email
-                } = action?.payload?.user;
+                const{ displayName, email, photoURL}  = action?.payload?.user;
                 return{
                     ...state,
                     loading:false,
-                    currentUser:{displayName, photoUrl, email}
+                    currentUser:{displayName, email, photoURL},
                 };
             }else{
                 return{
@@ -37,7 +35,7 @@ export const userSlice = createSlice({
             };
         },
 
-        registerFailed:(action, state) =>{
+        registerFailed:(state,action) =>{
             return {
                 ...state,
                 error:action.payload,
@@ -53,14 +51,14 @@ export const userSlice = createSlice({
             };
                 },
 
-        logInUserData:(action,state) =>{
+        logInUserData:(state,action) =>{
             return{
                 ...state,
                 loggedInUser:action.payload,
             };
         },
 
-        singOutCurrentUser: (action,state) =>{
+        singOutCurrentUser: (state, action) =>{
             return {
                 ...state,
                 error:null,
